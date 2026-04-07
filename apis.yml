@@ -1,7 +1,12 @@
 aid: centerpoint-energy
-url: https://raw.githubusercontent.com/api-evangelist/centerpoint-energy/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/centerpoint-energy/refs/heads/main/apis.yml
 modified: '2026-03-21'
 apis: []
 common:
   - type: Website
     url: https://www.centerpoint-energy.com
+description: >-
+  CenterPoint Energy is a domestic energy delivery company that includes electric
+  transmission and distribution, natural gas distribution, and energy services operations
+  serving residential, commercial, and industrial customers.
