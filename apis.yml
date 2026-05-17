@@ -102,7 +102,7 @@ common:
     url: https://www.energy.gov/data/green-button
   - type: Smart Meter Texas
     url: https://www.smartmetertexas.com/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.centerpointenergy.com/en-us/utility/pages/privacy-policy.aspx
 maintainers:
   - FN: Kin Lane
