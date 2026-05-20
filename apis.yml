@@ -92,6 +92,8 @@ apis:
       contractor teams, including Automated Leads integrations and webhook
       flows.
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/centerpoint-energy
   - type: Website
     url: https://www.centerpointenergy.com
   - type: Builder Developer Resources
