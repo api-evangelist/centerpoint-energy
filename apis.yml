@@ -92,6 +92,8 @@ apis:
       contractor teams, including Automated Leads integrations and webhook
       flows.
 common:
+  - type: DomainSecurity
+    url: security/centerpoint-energy-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/centerpoint-energy
   - type: Website
