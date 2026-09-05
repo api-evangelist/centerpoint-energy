@@ -1,16 +1,21 @@
 aid: centerpoint-energy
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/centerpoint-energy/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/centerpoint-energy/refs/heads/main/apis.yml
 name: CenterPoint Energy
 tags:
-  - Electricity
-  - Energy
-  - Fortune 500
-  - Green Button
-  - Natural Gas
-  - Smart Meter
-  - Usage Data
-  - Utility
+- EDI
+- ERCOT
+- Electricity
+- Energy
+- Fortune 500
+- Green Button
+- Interval Data
+- NAESB ESPI
+- Natural Gas
+- Smart Meter
+- Texas
+- TxSET
+- Usage Data
+- Utility
 type: Index
 deliveryModel:
   model: unknown
@@ -38,99 +43,151 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/centerpoint-energy.png
 access: 3rd-Party
 created: '2026-03-21'
-modified: '2026-04-23'
+modified: '2026-09-05'
 position: Consuming
 specificationVersion: '0.23'
-description: >-
-  CenterPoint Energy is a domestic energy delivery company that provides
-  electric transmission and distribution, natural gas distribution, and
-  energy services operations serving residential, commercial, and industrial
-  customers across multiple U.S. states. Developer-facing interfaces include
-  the Smart Meter Texas (SMT) Usage History Inquiry API, Green Button Connect
-  My Data exports for authorized third-party access to customer interval
-  usage, and the Centerpoint Connect service API at
-  api-portal.centerpointconnect.io used by contractor and field-service
-  integrations.
+description: 'CenterPoint Energy is a domestic energy delivery company providing electric transmission
+  and distribution, natural gas distribution and energy services to residential, commercial and industrial
+  customers across Texas, Indiana, Minnesota, Ohio and Louisiana. Its machine-readable surfaces are B2B
+  and regulator-driven rather than a public developer program: CenterPoint Energy Houston Electric is
+  one of four Texas Transmission and Distribution Service Providers that jointly own and fund Smart Meter
+  Texas, whose REST/SOAP interface at services.smartmetertexas.net serves 15-minute interval reads, daily
+  register reads, monthly billing reads and NAESB ESPI Green Button exports to customer-authorized third
+  parties over mutual TLS. CenterPoint also runs a Competitive Retailers Information Portal and publishes
+  the TxSET (ANSI X12 EDI) transaction standards and SAC04 invoice codes retailers integrate against.'
 apis:
-  - aid: centerpoint-energy:usage-history-inquiry
-    name: CenterPoint Energy Usage History Inquiry API
-    tags:
-      - Billing History
-      - Interval Data
-      - Smart Meter Texas
-      - Usage
-    humanURL: https://www.smartmetertexas.com/
-    properties:
-      - url: https://www.smartmetertexas.com/
-        type: Website
-      - url: https://www.smartmetertexas.com/home
-        type: Documentation
-      - url: https://www.smartmetertexas.com/developers
-        type: Developer
-    description: >-
-      Automated access to residential and commercial billing history and
-      electricity usage as measured by CenterPoint's Interval Data Recorders
-      (IDRs), exposed through the Smart Meter Texas platform that CenterPoint
-      participates in as a Texas Transmission and Distribution Service
-      Provider. Intended for third-party information providers acting on
-      customer authorization with API methods for account validation,
-      provider account management, and retrieval of interval usage.
-  - aid: centerpoint-energy:green-button-connect-my-data
-    name: CenterPoint Energy Green Button Connect My Data
-    tags:
-      - Energy Usage
-      - Green Button
-      - Interval Data
-      - Open Data
-    humanURL: https://www.energy.gov/data/green-button
-    properties:
-      - url: https://www.energy.gov/data/green-button
-        type: Website
-      - url: https://www.greenbuttonalliance.org/
-        type: Alliance
-      - url: https://www.naesb.org/ESPI_Standards.asp
-        type: Specification
-    description: >-
-      CenterPoint Energy has committed to the Green Button initiative,
-      providing customers and authorized third parties with secure download
-      and Connect My Data API access to detailed interval energy usage in
-      the NAESB ESPI (Energy Services Provider Interface) standard XML /
-      Atom format.
-  - aid: centerpoint-energy:centerpoint-connect-services-api
-    name: Centerpoint Connect Services API
-    tags:
-      - Field Service
-      - Integration
-      - Partner
-    humanURL: https://api-portal.centerpointconnect.io/
-    properties:
-      - url: https://api-portal.centerpointconnect.io/
-        type: Developer
-      - url: https://centerpointconnect.zendesk.com/hc/en-us/sections/16652143336855-API-Integrations
-        type: Documentation
-    description: >-
-      The Centerpoint API Developer Portal publishes Services API references,
-      examples, and troubleshooting for partners integrating with the
-      Centerpoint Connect field-service and workflow platform used by
-      contractor teams, including Automated Leads integrations and webhook
-      flows.
+- aid: centerpoint-energy:usage-history-inquiry
+  name: CenterPoint Energy Usage History via Smart Meter Texas Data Access API
+  tags:
+  - Billing History
+  - Interval Data
+  - Smart Meter Texas
+  - Usage
+  humanURL: https://www.smartmetertexas.com/
+  properties:
+  - url: https://www.smartmetertexas.com/
+    type: Website
+  - url: https://www.smartmetertexas.com/
+    type: DeveloperPortal
+  - url: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+    type: APIReference
+  - url: https://www.smartmetertexas.com/quickrefguides
+    type: Documentation
+  - url: authentication/centerpoint-energy-smt-authentication.yml
+    type: Authentication
+  - url: errors/centerpoint-energy-problem-types.yml
+    type: ErrorCatalog
+  - url: conventions/centerpoint-energy-conventions.yml
+    type: Conventions
+  description: Customer-authorized access to CenterPoint Energy interval usage, daily register reads,
+    monthly billing reads, meter and premise attributes and on-demand reads, through the Smart Meter Texas
+    (SMT) Data Access interface. SMT is jointly owned and funded by the four Texas TDSPs — CenterPoint
+    Energy Houston Electric, Oncor, AEP Texas and TNMP — and is the surface CenterPoint's own competitive-retailer
+    and customer documentation directs third parties to for CenterPoint meter data; the contract is published
+    and operated by Smart Meter Texas, not by CenterPoint alone. REST and SOAP endpoints live at services.smartmetertexas.net
+    (UAT at uatservices.smartmetertexas.net) behind mutual TLS plus HTTP Basic credentials issued per
+    DUNS. No machine-readable OpenAPI/WSDL is published; the contract is a 185-page PDF interface guide.
+  baseURL: https://services.smartmetertexas.net
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/centerpoint-energy.png
+- aid: centerpoint-energy:green-button-connect-my-data
+  name: CenterPoint Energy Green Button Connect My Data (NAESB ESPI)
+  tags:
+  - Energy Usage
+  - Green Button
+  - Interval Data
+  - Open Data
+  humanURL: https://www.smartmetertexas.com/
+  properties:
+  - url: https://www.smartmetertexas.com/
+    type: Website
+  - url: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+    type: APIReference
+  - url: https://www.energy.gov/data/green-button
+    type: Specification
+  - url: https://www.greenbuttonalliance.org/
+    type: Standards
+  - url: https://www.naesb.org/ESPI_Standards.asp
+    type: Specification
+  description: NAESB ESPI (Energy Services Provider Interface) Green Button export of a CenterPoint Energy
+    electric customer's 15-minute interval usage, delivered as an ad-hoc REST call to the /greenbutton/
+    resource on the Smart Meter Texas Data Access interface and documented in section 3.1.1.4 of the SMT
+    Interface Guide. Access requires an executed Energy Data Sharing Agreement and the same mutual-TLS
+    + Basic credentials as the rest of the SMT surface. The Green Button standard itself is stewarded
+    by NAESB and the Green Button Alliance; the CenterPoint-reachable implementation is the SMT endpoint.
+  baseURL: https://services.smartmetertexas.net/greenbutton
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/centerpoint-energy.png
 common:
-  - type: DomainSecurity
-    url: security/centerpoint-energy-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/centerpoint-energy
-  - type: Website
-    url: https://www.centerpointenergy.com
-  - type: Builder Developer Resources
-    url: https://www.centerpointenergy.com/en-us/Services/Pages/builder-developer-resources.aspx
-  - type: Energy Data Portal
-    url: https://energydataportal.centerpointenergy.com/
-  - type: Green Button
-    url: https://www.energy.gov/data/green-button
-  - type: Smart Meter Texas
-    url: https://www.smartmetertexas.com/
-  - type: PrivacyPolicy
-    url: https://www.centerpointenergy.com/en-us/utility/pages/privacy-policy.aspx
+- type: Website
+  url: https://www.centerpointenergy.com
+- type: LinkedIn
+  url: https://www.linkedin.com/company/centerpoint-energy
+- type: Support
+  url: https://www.centerpointenergy.com/en-us/contact-us
+- type: Blog
+  url: https://www.centerpointenergy.com/en-us/about-us/news
+- type: Pricing
+  url: https://www.centerpointenergy.com/en-us/our-services/rates-tariffs
+- type: TermsOfService
+  url: https://www.centerpointenergy.com/en-us/about-us/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.centerpointenergy.com/en-us/about-us/legal/privacy-policy
+- type: Documentation
+  url: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers/processes-standards-forms
+- type: Portal
+  url: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers
+- type: Services
+  url: https://www.centerpointenergy.com/en-us/for-business/industry/builders-developers
+- type: Tools
+  url: https://energydataportal.centerpointenergy.com/
+- type: Partners
+  url: https://www.smartmetertexas.com/
+- type: Standard
+  url: https://www.energy.gov/data/green-button
+- type: StatusPage
+  url: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers
+- type: Conformance
+  url: conformance/centerpoint-energy-conformance.yml
+- type: Conventions
+  url: conventions/centerpoint-energy-conventions.yml
+- type: ErrorCatalog
+  url: errors/centerpoint-energy-problem-types.yml
+- type: Authentication
+  url: authentication/centerpoint-energy-smt-authentication.yml
+- type: Lifecycle
+  url: lifecycle/centerpoint-energy-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/centerpoint-energy-rate-limits.yml
+- type: Plans
+  url: plans/centerpoint-energy-plans-pricing.yml
+- type: FinOps
+  url: finops/centerpoint-energy-finops.yml
+- type: Packages
+  url: packages/centerpoint-energy-packages.yml
+- type: LLMsTxt
+  url: llms/centerpoint-energy-llms.txt
+- type: DomainSecurity
+  url: security/centerpoint-energy-domain-security.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 8
+  pass: local-v3
+x-ownership-corrections:
+  date: '2026-09-05'
+  removed: centerpoint-energy:centerpoint-connect-services-api
+  host: api-portal.centerpointconnect.io
+  finding: STEP 0c ownership check. The Centerpoint API Developer Portal at api-portal.centerpointconnect.io
+    belongs to Centerpoint Connect, a commercial roofing CRM company, not to CenterPoint Energy. Proved
+    from the portal's own markup, which links its application at https://app.centerpointconnect.com/ and
+    its contact page at https://centerpointconnect.com/contact/; centerpointconnect.com returns HTTP 200
+    with the title "Roofing CRM Software | Centerpoint Connect" and the description "All-in-one software
+    built for commercial roofers." The two companies share only a name. The API entry, its plans entry
+    and its finops meter have been removed rather than repriced.
+  evidence:
+  - url: https://api-portal.centerpointconnect.io/
+    status: 200
+  - url: https://centerpointconnect.com/
+    status: 200

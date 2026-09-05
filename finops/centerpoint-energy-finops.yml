@@ -17,15 +17,17 @@ tags:
   - FinOps
   - FOCUS
 description: 'FOCUS-aligned FinOps for CenterPoint Energy''s integration surfaces. The Smart Meter Texas
-  TPSP and Green Button Connect My Data APIs are free under regulator / consortium policy; the only
-  invoice surfaces visible to a partner are (a) the underlying utility bill driven by metered consumption
-  and (b) any Centerpoint Connect partner contract for the contractor / field-service platform.'
-notes: API access is free (SMT, Green Button) or partner-contracted (Centerpoint Connect). Meters track
-  usage and invoice signals rather than per-call charges.
+  Data Access and Green Button interfaces are free under regulator / consortium policy; the only invoice
+  surface visible to an integrator is the underlying utility bill driven by metered consumption, priced by
+  the regulated retail delivery tariff.'
+notes: 'API access carries no published per-call charge; meters below track usage and invoice signals
+  rather than API spend. Corrected 2026-09-05: a cpc_api_requests meter and a Centerpoint Connect partner
+  contract were removed from this file — that surface belongs to Centerpoint Connect, an unrelated roofing
+  CRM company, not to CenterPoint Energy.'
 sources:
   - https://www.smartmetertexas.com/
   - https://www.energy.gov/data/green-button
-  - https://api-portal.centerpointconnect.io/
+  - https://www.centerpointenergy.com/en-us/our-services/rates-tariffs
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -69,12 +71,6 @@ meters:
     dimensions:
       - account
       - service_class
-  - name: cpc_api_requests
-    unit: request
-    aggregation: sum
-    dimensions:
-      - partner
-      - operation
   - name: utility_invoiced_amount
     unit: USD
     aggregation: sum
@@ -87,14 +83,14 @@ principles:
     description: Pull SMT TPSP usage exports nightly to see authorized account interval data, and combine
       with the customer's CenterPoint utility bill to reconcile observed kWh with billed kWh.
   - name: Allocation
-    description: Tag SMT / Green Button authorizations with the consuming product team and the customer's
+    description: Tag SMT and Green Button authorizations with the consuming product team and the customer's
       cost center so utility-data costs are allocated where the data drives business outcomes.
   - name: Optimization
     description: Use Green Button bulk authorization windows rather than continuous polling; align SMT
       requests with the overnight batch cadence; cache results that don't change intra-day.
   - name: Accountability
     description: Energy / facilities lead owns the utility bill; integration platform owner manages SMT
-      TPSP registration and Green Button consent flows; partner ops owns the Centerpoint Connect contract.
+      TPSP registration and Green Button consent flows; and the retail delivery tariff governs the utility invoice itself.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

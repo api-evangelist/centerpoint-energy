@@ -1,0 +1,61 @@
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf and
+  https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers
+note: >-
+  Both pages fetched at HTTP 200 on 2026-09-05. No versioning policy, deprecation policy, Sunset/Deprecation
+  header contract or SLA document was found published for any CenterPoint or Smart Meter Texas interface.
+  What does exist is a dated market-notice stream for the transaction systems retailers integrate against,
+  recorded below as the operational status channel.
+versioning:
+  policy_published: false
+  scheme: platform-release
+  current_version: SMT 3.0
+  contract_revision: '2024-02-26'
+  note: >-
+    The interface guide is versioned as a dated document (SMT 3.0 Data Access Interface Guide,
+    February 26, 2024) covering the ROR, CSP, TDSP and MOU roles. There is no per-endpoint version, no
+    version header or path segment, and no published policy stating how long a prior generation is
+    supported after a new one ships.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No RFC 8594 Sunset or Deprecation header contract, no deprecation schedule and no notice period is
+    published. There is no OpenAPI to derive deprecated operations from. The SMT 2.0 to 3.0 transition is
+    referenced in the guide but its retirement terms are not stated anywhere public.
+status_page:
+  present: true
+  type: market-notice-stream
+  url: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers
+  note: >-
+    CenterPoint Energy publishes dated market notices for the systems competitive retailers transact
+    against — for example "CNP Planned Market System Maintenance" notices issued as initial / reminder /
+    final PDFs, and unplanned entries such as "CNP Transaction Processing Issue" and "Urgent Unplanned
+    Market System Maintenance". This is a real, dated operational-status channel for the integration
+    surface, but it is a page of PDF links rather than a status API, RSS feed or Statuspage-style
+    component board; there is no machine-readable incident feed and no subscribable endpoint.
+    status.centerpointenergy.com does not resolve (connection failure, probed 2026-09-05).
+  machine_readable: false
+sla:
+  published: false
+  note: No uptime commitment, latency target or credit schedule is published for the API surface.
+changelog:
+  published: false
+  note: >-
+    No dated API changelog or release-notes page was found. The closest artifact is the revision date on
+    the interface guide PDF itself and the market-notice stream above; neither enumerates interface changes.
+support:
+  channel: Smart Meter Texas support team (credential and certificate provisioning); CenterPoint Energy representative for market processes
+  url: https://www.centerpointenergy.com/en-us/contact-us
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

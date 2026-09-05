@@ -1,0 +1,67 @@
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org/pypi/*/json, and the Smart Meter Texas / CenterPoint Energy documentation,
+  queried 2026-09-05
+description: >-
+  CenterPoint Energy publishes no first-party client library on any registry, and neither does Smart Meter
+  Texas. Neither organisation operates a public GitHub organisation carrying SDK source. Every package
+  below is a third-party community client written against the Smart Meter Texas consumer portal, and is
+  recorded here as an abandonment / substitution signal rather than as provider-published tooling: the
+  only maintained way to call this surface from code is code somebody else wrote, unaffiliated with the
+  utility or the platform.
+official_sdk_count: 0
+package_count: 1
+packages:
+  - name: smart-meter-texas
+    registry: pypi
+    url: https://pypi.org/project/smart-meter-texas/
+    repository: https://github.com/grahamwetzler/smart-meter-texas
+    language: Python
+    official: false
+    version: 0.5.5
+    published: '2024-04-27'
+    description: >-
+      "Package to connect to and retrieve data from the unofficial Smart Meter Texas API" — the author's
+      own summary. It drives the consumer web portal, not the credentialed services.smartmetertexas.net
+      Data Access interface documented in the SMT Interface Guide, so it is a different surface as well as
+      a different author.
+    note: >-
+      Last release 2024-04-27, more than two years before this check and predating nothing in particular —
+      no dated platform release exists to compare it against, because SMT publishes no changelog. Recorded
+      as third-party; contributes no sdk_count credit to CenterPoint Energy.
+searched_registries:
+  - registry: npm
+    result: none
+    note: >-
+      registry.npmjs.org returned {"error":"Not found"} for smart-meter-texas, smartmetertexas and
+      centerpoint-energy; a full-text search for "smart meter texas" returned no related package.
+  - registry: pypi
+    result: one third-party package
+    note: pypi.org/pypi/smartmetertexas/json returned 404; smart-meter-texas returned 200 (above).
+  - registry: maven-central
+    result: none
+  - registry: nuget
+    result: none
+  - registry: rubygems
+    result: none
+  - registry: packagist
+    result: none
+  - registry: crates.io
+    result: none
+  - registry: pkg.go.dev
+    result: none
+first_party_distribution:
+  present: false
+  note: >-
+    The SMT Data Access Interface Guide distributes no code — integration is described in prose and the
+    caller writes their own HTTPS client with a signed certificate. No sample client, Postman collection or
+    reference implementation is published. No SDKs pointer is emitted in apis.yml, because a provider that
+    ships no library must not be credited with one.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

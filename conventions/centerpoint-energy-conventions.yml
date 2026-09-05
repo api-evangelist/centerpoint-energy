@@ -1,0 +1,120 @@
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+api: centerpoint-energy:usage-history-inquiry
+generated: '2026-09-05'
+method: searched
+source: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+note: >-
+  Cross-cutting runtime semantics for the Smart Meter Texas Data Access interface, the surface through
+  which CenterPoint Energy meter data is reached by customer-authorized third parties. Read from the
+  SMT 3.0 Data Access Interface Guide (February 26, 2024). Nothing here is derived from an OpenAPI —
+  none is published.
+auth_style:
+  summary: Mutual TLS client certificate plus HTTP Basic credentials scoped per DUNS.
+  see: authentication/centerpoint-energy-smt-authentication.yml
+versioning:
+  style: platform-release
+  current: SMT 3.0
+  in_url: false
+  in_header: false
+  note: >-
+    Version is a platform generation (SMT 2.0 -> SMT 3.0) restated in the guide's title and revision date,
+    not a URL path segment, media-type parameter or header. A consumer cannot pin a version from the wire.
+pagination:
+  style: none
+  note: >-
+    Scope is bounded by request parameters instead of pages — a caller asks for one ESI ID, a list of
+    ESI IDs, or all ESI IDs for a DUNS, over an explicit startDate/endDate range. Large results are
+    delivered asynchronously via the report/subscription flow (a request returns a correlation identifier,
+    the caller polls Report Status, then collects the file), not by paging a synchronous response.
+    No cursor, offset, limit or page parameters are documented.
+async_pattern:
+  present: true
+  description: >-
+    Ad-hoc bulk requests are asynchronous — submit the request, receive a transaction/correlation
+    identifier, poll /reportrequeststatus/ or /odrstatus/, then retrieve the completed report.
+    Green Button, On-Demand Read Status and Report Status are explicitly documented as synchronous.
+request_tracing:
+  field: trans_id
+  location: request body
+  echoed: true
+  note: >-
+    Callers supply their own trans_id in the request payload and it is echoed on the response; correlation
+    IDs are returned for asynchronous On-Demand Read and report requests. There is no X-Request-Id style
+    response header.
+error_envelope:
+  shape: vendor JSON — {"error":"..."} for gateway failures, errorCode/errorMessage for business failures
+  rfc9457: false
+  see: errors/centerpoint-energy-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: undocumented
+  note: >-
+    A numeric daily cap is published in prose (3,000 On-Demand Reads per TDU per day) but no RateLimit-*,
+    X-RateLimit-* or Retry-After response header and no exhaustion status code is documented, so an agent
+    cannot detect the ceiling at runtime — only by reading the PDF.
+  see: rate-limits/centerpoint-energy-rate-limits.yml
+content_negotiation:
+  request: application/json
+  response: application/json, except Green Button functions which return NAESB ESPI XML
+  note: Response format is fixed per function rather than negotiated via Accept.
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  note: >-
+    No Idempotency-Key header, no replay-safe retry contract and no documented deduplication window on any
+    mutating operation. The write surface — New Subscription, Unsubscribe/Cancel Subscription, New Energy
+    Data Sharing Agreement, Terminate Energy Data Sharing Agreement and On-Demand Read — carries a
+    caller-supplied trans_id, but the guide nowhere states that resending the same trans_id is treated as a
+    replay rather than a new request, so it cannot be relied on as an idempotency key. A retried
+    New Subscription must be assumed to create a second subscription.
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run, preview or validate-only mode is documented. A UAT environment at
+    uatservices.smartmetertexas.net is published as a separate pre-production system, which is a
+    rehearsal environment rather than a dry-run flag on a production call.
+reversibility:
+  grade: documented
+  note: >-
+    Every subscription and agreement created through the API has a published inverse operation, so an
+    agent can undo what it created. No window, deadline or retention period is stated anywhere in the
+    guide for any of them, and no window is asserted here — which is exactly why this grades documented
+    rather than verified.
+  write_surface:
+    - operation: New Subscription
+      endpoint: /NewSubscription/
+      reversal: Unsubscribe / Cancel Subscription
+      reversal_endpoint: /UnSubscription/
+      window: null
+      window_stated: false
+      docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+    - operation: New Energy Data Sharing Agreement
+      endpoint: /NewAgreement/
+      reversal: Terminate Energy Data Sharing Agreement
+      reversal_endpoint: /Terminateagreement/
+      window: null
+      window_stated: false
+      docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+    - operation: On-Demand Read (ODR)
+      endpoint: /odr/
+      reversal: null
+      window: null
+      window_stated: false
+      note: >-
+        An ODR triggers a physical meter read. It is not cancellable or reversible once submitted, and it
+        consumes one of the 3,000 daily reads allotted per TDU. An agent should treat it as a one-way action.
+cross_links:
+  errors: errors/centerpoint-energy-problem-types.yml
+  authentication: authentication/centerpoint-energy-smt-authentication.yml
+  rate_limits: rate-limits/centerpoint-energy-rate-limits.yml
+  lifecycle: lifecycle/centerpoint-energy-lifecycle.yml
+  conformance: conformance/centerpoint-energy-conformance.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

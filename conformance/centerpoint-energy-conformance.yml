@@ -1,0 +1,123 @@
+specification: API Commons Conformance
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf and
+  https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers/processes-standards-forms
+note: >-
+  Both sources fetched at HTTP 200 on 2026-09-05. Cross-cutting conformance is read from the Smart Meter
+  Texas 3.0 Data Access Interface Guide; the domain-standard signature is read from CenterPoint Energy's
+  own competitive-retailer standards page, which names the TxSET transaction set it invoices against.
+  Nothing is asserted from a marketing claim.
+conformance:
+  - id: naesb-espi
+    name: NAESB REQ.21 Energy Services Provider Interface (ESPI) / Green Button
+    conforms: true
+    evidence: >-
+      Section 3.1.1.4 of the SMT Data Access Interface Guide defines a Green Button function whose
+      response payload is "an XML format as defined by the Green Button standard", served from the
+      /greenbutton/ resource on services.smartmetertexas.net. This is the standard the energy sector uses
+      for customer interval-usage portability, and it is implemented as a callable endpoint rather than
+      claimed on a page.
+    url: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+  - id: ansi-x12-txset
+    name: Texas Standard Electronic Transaction (TxSET) — ANSI X12 EDI, transaction set 810_02
+    conforms: true
+    evidence: >-
+      CenterPoint Energy's competitive-retailer standards page publishes "EDI Transaction Names",
+      "ESI ID Format" and "SAC04 Codes (TxSET 810_02): TDSP to CR Invoice", instructing retailers to
+      "Refer to Texas Standard Electronic Transaction 810_02", and links the ERCOT TxSET guides at
+      https://www.ercot.com/mktrules/guides/txset/index. X12 810 is the invoice transaction set; a retail
+      electric provider that already speaks TxSET integrates with CenterPoint's market transactions with
+      no bespoke connector.
+    url: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers/processes-standards-forms
+  - id: mutual-tls
+    name: Mutual TLS client authentication
+    conforms: true
+    evidence: >-
+      Section 2, Security Integration Requirements — "Mutual TLS authentication will be required" for the
+      API channel, with a signed registered API SSL certificate per entity account.
+    url: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+  - id: http-basic
+    name: HTTP Basic authentication (RFC 7617)
+    conforms: true
+    evidence: >-
+      API credentials are an ID/password pair carried in a Basic authorization header; a missing header
+      returns 403 {"error":"Basic authentication header is missing."}.
+    url: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: false
+    evidence: >-
+      No OAuth flow, authorization server, token endpoint or scope model appears anywhere in the SMT Data
+      Access Interface Guide, and /.well-known/oauth-authorization-server is not served on any host probed
+      on 2026-09-05. Third-party access is authorized out of band by an executed Energy Data Sharing
+      Agreement, not by a delegated-authorization protocol.
+  - id: oidc
+    name: OpenID Connect
+    conforms: false
+    evidence: /.well-known/openid-configuration returned 404 on centerpointenergy.com and an SPA shell on smartmetertexas.com, 2026-09-05.
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      Errors are a bare vendor JSON envelope ({"error":"..."} or errorCode/errorMessage); no
+      application/problem+json media type and no type URIs are published. See
+      errors/centerpoint-energy-problem-types.yml.
+  - id: pagination
+    name: Standard pagination
+    conforms: false
+    evidence: >-
+      No cursor, offset, limit or page parameters are documented; result scope is bounded by ESI ID list
+      and date range, with bulk results delivered through an asynchronous report flow.
+  - id: idempotency
+    name: Idempotent retry semantics
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or documented replay window on any mutating operation. See
+      conventions/centerpoint-energy-conventions.yml.
+  - id: json-api
+    name: JSON:API
+    conforms: false
+    evidence: Payloads are bespoke JSON objects; no JSON:API media type, document structure or links object.
+  - id: openapi
+    name: OpenAPI description document
+    conforms: false
+    evidence: >-
+      No OpenAPI or Swagger document is served at any conventional path on www.centerpointenergy.com,
+      energydataportal.centerpointenergy.com or www.smartmetertexas.com (probed 2026-09-05); the contract
+      is published only as a 185-page PDF.
+  - id: wsdl
+    name: WSDL for the documented SOAP surface
+    conforms: false
+    evidence: >-
+      The guide documents SOAP operations (BIM_CSPAuthorizationSOAP, BIM_MeterInformationSOAP,
+      BIM_MeterUsageSOAP, BIM_PremiseInformationSOAP, BIM_SubscriptionSOAP) but no ?wsdl or ?singleWsdl
+      document is retrievable — services.smartmetertexas.net refuses an anonymous TLS handshake, and
+      ?wsdl on www.smartmetertexas.com returns the SPA shell.
+domain_standard:
+  present: true
+  standards:
+    - ansi-x12-txset
+    - naesb-espi
+  summary: >-
+    CenterPoint Energy's market-facing surface is standards-native for its sector on two axes: ANSI X12
+    EDI through the ERCOT TxSET transaction set for retailer invoicing and market transactions, and NAESB
+    REQ.21 ESPI (Green Button) for customer interval-usage portability. Neither is a bespoke CenterPoint
+    format.
+regulatory_context:
+  regulators:
+    - Public Utility Commission of Texas
+    - ERCOT
+    - Federal Energy Regulatory Commission
+  note: >-
+    The retail-market interfaces are tariff-driven; the standards-and-forms page states documents "align
+    with ERCOT market rules and Texas Public Utility Commission regulations". Recorded as context, not as
+    a certification claim — no SOC 2, ISO 27001, PCI, HIPAA or FedRAMP attestation was found published,
+    so no Compliance pointer is emitted.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

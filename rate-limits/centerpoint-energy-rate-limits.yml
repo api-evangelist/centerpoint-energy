@@ -1,56 +1,85 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: CenterPoint Energy
 providerId: centerpoint-energy
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+generated: '2026-09-05'
+modified: '2026-09-05'
+method: searched
+source: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+reconciled: true
 tags:
   - Energy
   - Utility
   - Smart Meter
   - Green Button
   - Rate Limiting
-description: CenterPoint integration surfaces have different rate-limit ownership. Smart Meter Texas
-  limits are set by the SMT consortium and surfaced to registered TPSPs in the SMT developer guide.
-  Green Button Connect My Data limits follow the NAESB ESPI specification and the customer-authorization
-  cadence. Centerpoint Connect Services API limits are documented in the partner Zendesk knowledge base
-  and surface only after partner portal login.
-notes: Numeric limits are not visible without Smart Meter Texas TPSP registration or Centerpoint Connect
-  partner login.
-sources:
-  - https://www.smartmetertexas.com/developers
-  - https://centerpointconnect.zendesk.com/hc/en-us/sections/16652143336855-API-Integrations
-  - https://api-portal.centerpointconnect.io/
-responseCodes:
-  throttled: 429
-  serviceUnavailable: 503
+description: >-
+  Upgrades the 2026-05-04 bulk-sweep generated file, which asserted that no numeric limit was visible
+  without registration. One published numeric limit does exist and is stated in the open Smart Meter Texas
+  3.0 Data Access Interface Guide (fetched HTTP 200, 2026-09-05): On-Demand Reads are capped at 3,000 per
+  day per Transmission and Distribution Utility. That cap is shared across every caller reading meters on
+  CenterPoint Energy Houston Electric's network, not allocated per API credential — an integrator competes
+  for it with every other authorized third party on the same TDU. No other function publishes a numeric
+  ceiling, and the guide documents no rate-limit response headers at all.
+limit_count: 1
 limits:
-  - name: Smart Meter Texas TPSP throughput
-    scope: TPSP-account
-    metric: varies
-    limit: see SMT TPSP developer guide
-  - name: Green Button Connect My Data
-    scope: third-party-authorization
-    metric: varies
-    limit: see NAESB ESPI guidance / customer authorization scope
-  - name: Centerpoint Connect Services API
-    scope: partner-account
-    metric: varies
-    limit: see Centerpoint Connect partner Zendesk
+  - name: On-Demand Read (ODR) daily cap
+    scope: per-TDU
+    window: day
+    limit: 3000
+    metric: on-demand meter reads
+    burst: null
+    endpoint: /odr/
+    evidence: >-
+      "Get current Meter Read for one ESIID at a time. Note: The daily limit for ODRs is up to 3,000 per
+      Transmission and Distribution Utility Company (TDU)." — SMT 3.0 Data Access Interface Guide,
+      REST API quick reference, page 10.
+    docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+    note: >-
+      Shared ceiling across all requesters against one TDU. CenterPoint Energy Houston Electric is one TDU,
+      so this is the effective daily ODR budget for the whole CenterPoint electric footprint.
+  - name: Ad-hoc interval / register / billing read throughput
+    scope: per-DUNS
+    window: null
+    limit: null
+    metric: requests
+    evidence: >-
+      No numeric ceiling is stated for 15-Minute Interval Data, Daily Register Reads, Monthly Billing
+      Reads, Green Button, Meter Attributes or Premise Attributes. Bulk retrieval is steered into the
+      asynchronous report/subscription flow instead of being rate-capped in the documentation.
+    note: Honest gap — checked the published guide, no figure given.
+  - name: Subscription and agreement operations
+    scope: per-DUNS
+    window: null
+    limit: null
+    metric: requests
+    evidence: No numeric ceiling stated for New Subscription, UnSubscription, New Agreement or Terminate Agreement.
+response_headers:
+  published: []
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After response header is documented anywhere in the guide, and
+    no status code is assigned to limit exhaustion — the documented status table stops at 500. An agent
+    therefore has no runtime signal that it is approaching or has crossed the ODR ceiling; the only way to
+    know the limit is to read the PDF. This is the most consequential runtime gap on this surface.
+response_codes:
+  throttled: undocumented
+  server_error: 500
 policies:
-  - name: Customer authorization
-    description: Smart Meter Texas and Green Button calls operate under explicit customer authorization;
-      authorization scope and duration constrain usable request volume.
-  - name: Backoff
-    description: On 429 / 503, retry with exponential backoff and jitter; honor Retry-After when supplied.
-  - name: Smart Meter Texas batch windows
-    description: SMT bulk usage retrievals are designed around overnight / scheduled batch windows; high-frequency
-      polling is discouraged and may be throttled.
+  - name: Customer authorization bounds volume
+    description: >-
+      Calls operate only against ESI IDs covered by an executed Energy Data Sharing Agreement; the
+      agreement's scope and duration constrain usable request volume more than any published throttle.
+  - name: Asynchronous bulk retrieval
+    description: >-
+      Bulk requests return a correlation identifier and are collected via Report Status rather than served
+      synchronously, which is the platform's actual load-shedding mechanism in place of a request throttle.
+  - name: Backoff on 500
+    description: >-
+      The guide's only failure-retry guidance is the 500 message "Something went wrong. Please try again
+      later."; exponential backoff with jitter is the caller's responsibility and is not specified.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

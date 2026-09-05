@@ -1,0 +1,101 @@
+specification: API Commons Well-Known
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+generated: '2026-09-05'
+method: probed
+source: live anonymous HTTPS probes of every host named in apis.yml (registrable domain, www, API baseURL host, developer/portal host)
+note: >-
+  Every probed path missed. www.centerpointenergy.com and centerpointenergy.com return a genuine 404 for
+  all five discovery documents. energydataportal.centerpointenergy.com returns a bare 404 with no body.
+  www.smartmetertexas.com and smartmetertexas.com return HTTP 200 with a 973-byte React SPA shell
+  (<!doctype html><html lang="en">...) for EVERY /.well-known/* path including nonexistent ones — an SPA
+  catch-all, NOT a served document, and recorded here as a miss. services.smartmetertexas.net does not
+  answer an anonymous TLS handshake at all (mutual TLS required), so no anonymous probe is possible there.
+  No WellKnown or SecurityTxt pointer is emitted from this file, because nothing was served.
+hosts:
+  - host: www.centerpointenergy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: centerpointenergy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: energydataportal.centerpointenergy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: www.smartmetertexas.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: SPA shell (973 bytes of React index.html), not a security.txt — counted as a miss
+      - path: /.well-known/openid-configuration
+        status: 200
+        note: SPA shell, not a document — counted as a miss
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        note: SPA shell, not a document — counted as a miss
+      - path: /.well-known/api-catalog
+        status: 200
+        note: SPA shell, not a document — counted as a miss
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        note: SPA shell, not a document — counted as a miss
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: SPA shell, not an AgentCard JSON object — counted as a miss
+      - path: /.well-known/agent.json
+        status: 200
+        note: SPA shell, not an AgentCard JSON object — counted as a miss
+  - host: smartmetertexas.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: SPA shell, not a security.txt — counted as a miss
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: SPA shell, not an AgentCard JSON object — counted as a miss
+      - path: /.well-known/agent.json
+        status: 200
+        note: SPA shell, not an AgentCard JSON object — counted as a miss
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

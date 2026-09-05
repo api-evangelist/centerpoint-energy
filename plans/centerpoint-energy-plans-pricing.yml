@@ -4,96 +4,75 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: CenterPoint Energy
 providerId: centerpoint-energy
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+generated: '2026-09-05'
+modified: '2026-09-05'
+method: searched
+source: >-
+  https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf and
+  https://www.centerpointenergy.com/en-us/our-services/rates-tariffs
+reconciled: true
 tags:
   - Energy
   - Utility
   - Smart Meter
   - Green Button
   - Usage Data
-description: CenterPoint Energy exposes three integration surfaces. The Smart Meter Texas (SMT) Usage
-  History Inquiry API is operated by the Smart Meter Texas consortium for Texas TDSPs (CenterPoint participates
-  as a member) — access requires SMT Third-Party Service Provider registration and is free to authorized
-  TPSPs. Green Button Connect My Data follows the NAESB ESPI standard and is free to authorized third
-  parties acting on customer consent. The Centerpoint Connect Services API at api-portal.centerpointconnect.io
-  is a partner / contractor portal that gates products behind login; per-product pricing is not published
-  publicly.
-notes: SMT and Green Button are regulator / consortium-driven and free. Centerpoint Connect Services
-  API requires login to view any product / pricing detail.
-sources:
-  - https://www.smartmetertexas.com/
-  - https://www.smartmetertexas.com/developers
-  - https://www.energy.gov/data/green-button
-  - https://api-portal.centerpointconnect.io/
-  - https://centerpointconnect.zendesk.com/hc/en-us/sections/16652143336855-API-Integrations
+description: >-
+  CenterPoint Energy publishes no API plans, no developer pricing page and no self-service sign-up for any
+  machine-readable surface. Its integration surfaces are regulated or consortium-operated rather than
+  commercially tiered: access to CenterPoint meter data through the Smart Meter Texas Data Access interface
+  is granted by registration and an executed Energy Data Sharing Agreement at no published per-call charge,
+  and the Competitive Retailers Information Portal is entitlement-based for retail electric providers
+  already operating in the ERCOT market. What CenterPoint does publish as pricing is utility tariff — rate
+  schedules filed with the Public Utility Commission of Texas for delivering energy, which price kilowatt
+  hours, not API calls.
+notes: >-
+  This file replaces a 2026-05-04 bulk-sweep generated version whose third plan described a "Centerpoint
+  Connect Services API (Partner)". That surface belongs to Centerpoint Connect, an unrelated commercial
+  roofing CRM company at centerpointconnect.com, and has been removed rather than repriced. See the
+  ownership note in apis.yml.
+plan_count: 2
+pricing_page_published: false
+self_service_signup: false
 plans:
-  - id: centerpoint-energy-smt-tpsp
-    name: Smart Meter Texas Usage History Inquiry (TPSP)
-    type: freemium
-    description: Free authorized access to CenterPoint interval usage and billing history through the
-      Smart Meter Texas consortium API. Requires SMT Third-Party Service Provider registration and customer-authorized
-      account validation.
-    entries:
-      - label: TPSP API access
-        name: smt_tpsp
-        type: quota
-        metric: request
-        limit: -1
-        timeFrame: usage
-        geo: TX
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Account validation
-      - name: Interval usage retrieval
-      - name: Billing history retrieval
-      - name: Customer-authorized access
-  - id: centerpoint-energy-green-button
-    name: Green Button Connect My Data
-    type: freemium
-    description: Free authorized export of a customer's interval energy usage in NAESB ESPI XML / Atom
-      format, granted under the Green Button Connect My Data third-party authorization flow.
-    entries:
-      - label: ESPI Connect My Data
-        name: green_button
-        type: quota
-        metric: request
-        limit: -1
-        timeFrame: usage
-        geo: US
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: NAESB ESPI standard
-      - name: Customer-authorized OAuth flow
-      - name: Interval usage download
-  - id: centerpoint-energy-cpc-services-api
-    name: Centerpoint Connect Services API (Partner)
-    type: enterprise
-    description: Partner / contractor integration surface for the Centerpoint Connect field-service and
-      workflow platform. Pricing and per-product entitlements are gated behind portal login.
-    entries:
-      - label: Centerpoint Connect partner access
-        name: cpc_partner
-        type: subscription
-        metric: contract
-        limit: -1
-        timeFrame: month
-        geo: US
-        unit: 1
-        price: contact Centerpoint Connect partner team
-        userMultiplied: false
-    elements:
-      - name: Services API
-      - name: Automated Leads integration
-      - name: Webhook flows
-      - name: Contractor / field-service workflow
+  - id: centerpoint-energy-smt-data-access
+    name: Smart Meter Texas Data Access (registered third party)
+    type: free
+    description: >-
+      Registered entity access to CenterPoint Energy interval, register, billing, Green Button, meter and
+      premise data for ESI IDs covered by an executed Energy Data Sharing Agreement. Onboarding is a
+      registration and credentialing process — an SMT entity account, a signed API SSL certificate per
+      entity and an ID/password pair per DUNS — not a purchase. No per-call price, metered charge or
+      subscription fee is published for the interface.
+    price: '0.00'
+    currency: USD
+    billing_period: null
+    onboarding: registration + Energy Data Sharing Agreement
+    self_service: false
+    quota:
+      on_demand_reads: 3000 per day per TDU (shared across all callers on that utility)
+      other_functions: no published quota
+    source: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+  - id: centerpoint-energy-competitive-retailer-portal
+    name: Competitive Retailers Information Portal
+    type: entitlement
+    description: >-
+      24/7 portal access for retail electric providers operating on CenterPoint's Houston-area transmission
+      and distribution network, covering market guides, metering data, usage history, TxSET transaction
+      standards and forms. Access is requested rather than bought; no price is published because the
+      relationship is governed by the retail delivery tariff rather than a product price list.
+    price: not published
+    currency: USD
+    billing_period: null
+    onboarding: request access
+    self_service: false
+    source: https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers
+related_pricing:
+  - name: Tariff for Retail Delivery Service and rate schedules
+    url: https://www.centerpointenergy.com/en-us/our-services/rates-tariffs
+    note: >-
+      Regulated delivery pricing filed with the PUCT — this is what CenterPoint charges for energy
+      delivery, not for API access. Recorded so the distinction is explicit rather than conflated.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

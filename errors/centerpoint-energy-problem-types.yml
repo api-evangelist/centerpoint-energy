@@ -1,0 +1,73 @@
+specification: API Commons Error Catalog
+specificationVersion: '0.1'
+provider: CenterPoint Energy
+providerId: centerpoint-energy
+api: centerpoint-energy:usage-history-inquiry
+generated: '2026-09-05'
+method: searched
+source: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+docs: https://www.smartmetertexas.com/commonapi/gethelpguide/help-guides/Smart_Meter_Texas_Interface_Guide.pdf
+format: vendor-json
+rfc9457: false
+note: >-
+  Transcribed from "Table 4: Return Status Codes" and the response-object definitions in the Smart Meter
+  Texas 3.0 Data Access Interface Guide (February 26, 2024), page 23 onward. There is no OpenAPI to derive
+  4xx/5xx responses from. The envelope is a bare vendor JSON object, not application/problem+json — SMT
+  returns either {"error":"<message>"} for gateway/credential failures or a payload carrying errorCode and
+  errorMessage fields for business failures. No RFC 9457 type URIs are published.
+envelope:
+  gateway_shape: '{"error": "<human readable message>"}'
+  business_shape: '{"errorCode": "<code>", "errorMessage": "<human readable message>"}'
+  content_type: application/json
+  note: >-
+    Green Button responses are XML per the NAESB ESPI standard rather than JSON; the request is still JSON.
+problem_types:
+  - status: 200
+    title: OK
+    description: Request accepted. Asynchronous functions return a correlation/transaction identifier rather than data.
+  - status: 400
+    title: Bad request
+    description: Malformed or incomplete request payload.
+    remediation: Validate required fields (trans_id, requesterID, requesterType, date range, ESIID list) before sending.
+  - status: 400
+    title: Please provide username.
+    body: '{"error":"Please provide username."}'
+    description: The Basic authorization header was present but carried no username.
+    remediation: Send a complete Basic credential pair issued for the DUNS in the SMT 3.0 portal.
+  - status: 400
+    title: Please provide password.
+    body: '{"error":"Please provide password."}'
+    description: The Basic authorization header was present but carried no password.
+    remediation: Send a complete Basic credential pair issued for the DUNS in the SMT 3.0 portal.
+  - status: 401
+    title: Authentication failure
+    description: Credentials were rejected.
+    remediation: Confirm the API credential pair and that it belongs to the DUNS being used.
+  - status: 401
+    title: Authorization failure
+    description: >-
+      The caller authenticated but is not authorized for the requested ESI ID or function — typically a
+      missing or terminated Energy Data Sharing Agreement.
+    remediation: Confirm an active Energy Data Sharing Agreement covers the requested ESI IDs.
+  - status: 401
+    title: Incorrect username or password.
+    body: '{"error":"Incorrect username or password."}'
+    description: The supplied Basic credential pair did not match.
+    remediation: Re-issue credentials from the SMT 3.0 portal.
+  - status: 403
+    title: Basic authentication header is missing.
+    body: '{"error":"Basic authentication header is missing."}'
+    description: No Authorization header was supplied. Mutual TLS alone is not sufficient.
+    remediation: Add the HTTP Basic Authorization header alongside the client certificate.
+  - status: 500
+    title: Something went wrong. Please try again later.
+    body: '{"error":"Something went wrong. Please try again later."}'
+    description: Unhandled server-side failure.
+    remediation: Retry with exponential backoff and jitter; escalate to the Smart Meter Texas support team if persistent.
+gaps:
+  - No 429 or rate-limit-exhaustion status is documented, even though a numeric daily On-Demand Read cap exists.
+  - No stable machine-readable error code registry is published; errorCode values are described only as a string field.
+  - No application/problem+json or RFC 9457 type URIs.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
