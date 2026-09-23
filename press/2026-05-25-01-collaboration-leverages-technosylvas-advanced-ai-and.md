@@ -1,7 +1,9 @@
 ---
 title: Collaboration Leverages Technosylva's Advanced AI and ...
 url: https://investors.centerpointenergy.com/news-releases/news-release-details/centerpoint-energy-announces-collaboration-technosylva-advance
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CenterPoint Energy" press release artificial intelligence'
 position: 1
 source: serpapi-google

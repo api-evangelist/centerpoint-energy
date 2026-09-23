@@ -1,7 +1,9 @@
 ---
 title: First CenterPoint Energy Resiliency Technology Summit ...
 url: https://www.prnewswire.com/news-releases/first-centerpoint-energy-resiliency-technology-summit-showcases-innovative-new-tools-to-help-improve-hurricane-preparedness-and-response-302491419.html
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CenterPoint Energy" press release artificial intelligence'
 position: 2
 source: serpapi-google
