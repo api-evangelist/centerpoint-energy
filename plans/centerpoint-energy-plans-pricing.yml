@@ -76,3 +76,23 @@ related_pricing:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - prepaid
+  units: []
+  plans:
+  - name: Smart Meter Texas Data Access (registered third party)
+    access: free
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Competitive Retailers Information Portal
+    access: other
+    model: prepaid
+    model_how: stated
+    units: []
+    periods: []
