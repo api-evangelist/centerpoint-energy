@@ -1,4 +1,4 @@
-# CenterPoint Energy (centerpoint-energy)
+# CenterPoint Energy
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,75 +64,110 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-CenterPoint Energy is a domestic energy delivery company that provides electric transmission and distribution, natural gas distribution, and energy services operations serving residential, commercial, and industrial customers across multiple U.S. states. Developer-facing interfaces include the Smart Meter Texas (SMT) Usage History Inquiry API, Green Button Connect My Data exports for authorized third-party access to customer interval usage, and the Centerpoint Connect service API used by contractor and field-service integrations.
+CenterPoint Energy is a domestic energy delivery company providing electric transmission and distribution, natural gas distribution and energy services to residential, commercial and industrial customers across Texas, Indiana, Minnesota, Ohio and Louisiana. Its machine-readable surfaces are B2B and regulator-driven rather than a public developer program: CenterPoint Energy Houston Electric is one of four Texas Transmission and Distribution Service Providers that jointly own and fund Smart Meter Texas, whose REST/SOAP interface at services.smartmetertexas.net serves 15-minute interval reads, daily register reads, monthly billing reads and NAESB ESPI Green Button exports to customer-authorized third parties over mutual TLS. CenterPoint also runs a Competitive Retailers Information Portal and publishes the TxSET (ANSI X12 EDI) transaction standards and SAC04 invoice codes retailers integrate against.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/centerpoint-energy/refs/heads/main/apis.yml)
+**Areas:** EDI · ERCOT · Electricity · Energy · Fortune 500 · Green Button · Interval Data · NAESB ESPI · Natural Gas · Smart Meter · Texas · TxSET
 
-## Scope
+## CenterPoint Energy on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for CenterPoint Energy is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/centerpoint-energy/](https://apis.io/providers/centerpoint-energy/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (2)
 
-- Utility, Energy, Electricity, Natural Gas, Smart Meter, Usage Data, Green Button, Fortune 500
+- [CenterPoint Energy Usage History via Smart Meter Texas Data Access API](https://apis.io/apis/centerpoint-energy/usage-history-inquiry/) — Customer-authorized access to CenterPoint Energy interval usage, daily register reads, monthly billing reads, meter and premise attributes and on-demand…
+- [CenterPoint Energy Green Button Connect My Data (NAESB ESPI)](https://apis.io/apis/centerpoint-energy/green-button-connect-my-data/) — NAESB ESPI (Energy Services Provider Interface) Green Button export of a CenterPoint Energy electric customer's 15-minute interval usage, delivered as an…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-21
-- **Modified:** 2026-04-23
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Security (2)
 
-### CenterPoint Energy Usage History Inquiry API
-Automated access to residential and commercial billing history and electricity usage as measured by CenterPoint's Interval Data Recorders (IDRs), exposed through the Smart Meter Texas platform that CenterPoint participates in as a Texas Transmission and Distribution Service Provider.
+Authentication, trust centre, and vulnerability disclosure.
 
-**Human URL:** [https://www.smartmetertexas.com/](https://www.smartmetertexas.com/)
+- [Centerpoint Energy Domain Security](https://apis.io/security/centerpoint-energy/centerpoint-energy-domain-security/)
+- [Centerpoint Energy Smt Authentication](https://apis.io/security/centerpoint-energy/centerpoint-energy-smt-authentication/)
 
-#### Tags
-- Smart Meter Texas, Usage, Interval Data, Billing History
+#### Plans and pricing (1)
 
-#### Properties
-- [Website](https://www.smartmetertexas.com/)
-- [Documentation](https://www.smartmetertexas.com/home)
-- [Developer](https://www.smartmetertexas.com/developers)
+Published plans, tiers and prices.
 
-### CenterPoint Energy Green Button Connect My Data
-CenterPoint Energy has committed to the Green Button initiative, providing customers and authorized third parties with secure download and Connect My Data API access to detailed interval energy usage in the NAESB ESPI standard XML / Atom format.
+- [Centerpoint Energy Plans Pricing](https://apis.io/plans/centerpoint-energy/centerpoint-energy-plans-pricing/)
 
-**Human URL:** [https://www.energy.gov/data/green-button](https://www.energy.gov/data/green-button)
+#### Rate limits (1)
 
-#### Tags
-- Green Button, Energy Usage, Interval Data, Open Data
+Published request limits.
 
-#### Properties
-- [Website](https://www.energy.gov/data/green-button)
-- [Alliance](https://www.greenbuttonalliance.org/)
-- [Specification](https://www.naesb.org/ESPI_Standards.asp)
+- [Centerpoint Energy Rate Limits](https://apis.io/rate-limits/centerpoint-energy/centerpoint-energy-rate-limits/)
 
-### Centerpoint Connect Services API
-The Centerpoint API Developer Portal publishes Services API references, examples, and troubleshooting for partners integrating with the Centerpoint Connect field-service and workflow platform used by contractor teams.
+#### FinOps (1)
 
-**Human URL:** [https://api-portal.centerpointconnect.io/](https://api-portal.centerpointconnect.io/)
+What the API costs to run, by operation.
 
-#### Tags
-- Integration, Field Service, Partner
+- [Centerpoint Energy Finops](https://apis.io/finops/centerpoint-energy/centerpoint-energy-finops/)
 
-#### Properties
-- [Developer](https://api-portal.centerpointconnect.io/)
-- [Documentation](https://centerpointconnect.zendesk.com/hc/en-us/sections/16652143336855-API-Integrations)
+## Where to find this API
 
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.centerpointenergy.com)
-- [Builder Developer Resources](https://www.centerpointenergy.com/en-us/Services/Pages/builder-developer-resources.aspx)
-- [Energy Data Portal](https://energydataportal.centerpointenergy.com/)
-- [Green Button](https://www.energy.gov/data/green-button)
-- [Smart Meter Texas](https://www.smartmetertexas.com/)
+- [Documentation](https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers/processes-standards-forms)
+- [Pricing](https://www.centerpointenergy.com/en-us/our-services/rates-tariffs)
+- [Support](https://www.centerpointenergy.com/en-us/contact-us)
+- [Blog](https://www.centerpointenergy.com/en-us/about-us/news)
+- [Terms of service](https://www.centerpointenergy.com/en-us/about-us/legal/terms-of-use)
+- [Privacy policy](https://www.centerpointenergy.com/en-us/about-us/legal/privacy-policy)
+- [Status](https://www.centerpointenergy.com/en-us/for-business/industry/competitive-retailers)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 36.0** — thin · rubric 0.24.0 · scored 2026-10-17
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 47.4 |
+| Developer ergonomics | 45.2 |
+| Access clarity | 52.6 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 18.4** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/centerpoint-energy/](https://apis.io/providers/centerpoint-energy/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for CenterPoint Energy: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/centerpoint-energy/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
